@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
+	http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+	<welcome-file-list>
+		<!-- <welcome-file>index.jsp</welcome-file> -->
+		<welcome-file>index.jsp</welcome-file>
+	</welcome-file-list>
+	<!--
+		Spring ApplicationContext配置文件的路径,可使用通配符,多个路径用,号分隔 此参数用于后面的Spring
+		Context Loader
+	-->
+	
+	 <security-constraint>  
+	   <web-resource-collection>  
+	   <web-resource-name>s</web-resource-name>
+	      <url-pattern>/*</url-pattern>  
+	      <http-method>PUT</http-method>  
+				<http-method>DELETE</http-method>  
+				<http-method>HEAD</http-method>  
+				<http-method>OPTIONS</http-method>  
+				<http-method>TRACE</http-method>  
+	   	</web-resource-collection>  
+  	   <auth-constraint>  
+	   </auth-constraint>  
+	 </security-constraint>  
+	 <login-config>  
+	   <auth-method>BASIC</auth-method>  
+ 	 </login-config>  
+	
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>classpath*:/applicationContext*.xml</param-value>
+	</context-param>
+
+	<context-param>  
+		<param-name>CROSS_DOMAIN_STR</param-name> 
+		<param-value>&lt;,>,%3C,%3E</param-value> 
+	</context-param>  
+	<context-param>
+		<param-name>GET_CROSS_DOMAIN_STR</param-name>
+		<param-value>&lt;,>,",',%,;,(,),&amp;,+,HTTP,http,%0a</param-value>
+	</context-param>	
+	<!-- Filter 定义  -->
+	<listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+	
+	
+	<filter>
+		<filter-name>encodingFilter</filter-name>
+		<filter-class>
+			org.springframework.web.filter.CharacterEncodingFilter
+		</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+		<init-param>
+			<param-name>forceEncoding</param-name>
+			<param-value>true</param-value>
+		</init-param>
+	</filter>
+	<servlet>
+    <servlet-name>spring</servlet-name>
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    <!-- 可以自定义servlet.xml配置文件的位置和名称，默认为WEB-INF目录下，名称为[<servlet-name>]-servlet.xml，如spring-servlet.xml
+    <init-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>/WEB-INF/spring-servlet.xml</param-value>&nbsp; 默认
+    </init-param>
+    -->
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>spring</servlet-name>
+    <url-pattern>*.do</url-pattern>
+</servlet-mapping>
+
+<listener>
+   <listenerclass>
+     org.springframework.web.context.ContextLoaderListener
+   </listenerclass>
+</listener>
+</web-app>
